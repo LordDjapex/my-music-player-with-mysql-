@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify</title>
+</head>
+<body>
+    <div>
+    <h2>Albums</h2>
+    <% albums.forEach((album) => { %>
+        <img src=<%= "/" + album.cover_album_reference %>  +  width="450px" height="250px">
+        <h3><%= album.name_album %></h3>
+        <h4><%= "Artist: " + album.artist_album %></h4>
+        <h4><%= "Release: " + album.release_album %></h4>
+        <a href=<%= "/album/" + album.id_album %><button>Show songs</button></a>
+            
+        <% }) %>
+    </div>
+    <div>
+        <h2>Songs</h2>
+        <% songs.forEach((song) => { %>
+            <div>
+                <p><%= song.song_artist + " - " + song.name_song %></p>
+                <audio controls="controls">
+                    <source type="audio/mp3" src= "<%= "/" + song.song_path_reference %>" >
+                  </audio>
+                </div>
+            <% }) %>
+    </div>
+</body>
+</html>

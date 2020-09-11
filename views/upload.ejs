@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload</title>
+</head>
+<body>
+    <script>
+        let songs = []
+        let songCounter = 1;
+        function addSong() {
+            const pictureDiv = document.querySelector('#picture-upload')
+            const div = document.createElement('form');
+            div.id = ("song-form" + songCounter);
+            pictureDiv.appendChild(div)
+            const songNameInput = document.createElement('input')
+            songNameInput.id = ("songnameinput" + songCounter)
+            songNameInput.required = true;
+            songNameInput.name = "songname"
+            div.appendChild(songNameInput)
+            let uploadButton = document.createElement('INPUT')
+            uploadButton.id = ("songfile" + songCounter)
+            uploadButton.setAttribute('type', 'file')
+            uploadButton.required = true;
+            uploadButton.setAttribute('accept', '.mp3')
+            uploadButton.name = "song"
+            div.appendChild(uploadButton)
+            div.action = '/uploadSong'
+            div.method = 'POST'
+            div.enctype = "multipart/form-data"
+            div.target = "_blank"
+            songCounter += 1;
+        }
+        function changePic() {
+            const picture = document.querySelector('#album-cover')
+            const upload = document.querySelector("#album_cover_input")
+            picture.setAttribute('src', upload.files)
+        }
+        function sendingForms() {
+            if (document.querySelector('#albumName').value != '' && document.querySelector('#album_cover_input').value != '' && document.querySelector('#artistName').value != '' &&
+             document.querySelector('#songnameinput0').value != '' && document.querySelector('#songfile0') != '') {
+                    document.querySelector('#albumNameAndCover').submit()
+                    
+                    for (let i = 0; i < songCounter; i++) {
+                    console.log(i)
+                    if (document.querySelector('#songnameinput' + i).value != '' && document.querySelector('#songfile' + i).value != '') {
+                    let form = document.querySelector('#song-form' + i)
+                    console.log('#song-form' + i)
+                    const albuminput = document.createElement('input')
+                    albuminput.style.visibility = 'hidden'
+                    albuminput.name = 'nameofthealbum'
+                    albuminput.value = document.querySelector('#albumName').value
+                    form.appendChild(albuminput)
+                    let artistinput = document.createElement('input')
+                    artistinput.name = 'nameoftheartist'
+                    artistinput.value = document.querySelector('#artistName').value
+                    artistinput.style.visibility = 'hidden'
+                    form.appendChild(artistinput)
+
+                    form.submit()
+                } else {
+                    console.log('please input a file and file name')
+                }   
+            }
+            
+            } else {
+                console.log('please do input album name and cover')
+            }
+            
+        }
+
+        function song() {
+            
+        }
+    </script>
+    <div id="picture-upload">
+        
+        <div>
+            
+            <img src="/image-not-found-1024x576.jpeg" alt="imageUploaded" width="450px" height="250px" id="album-cover">
+            <form id="albumNameAndCover" action="/uploadCover" method="POST" enctype="multipart/form-data" target="_blank">
+                <input oninput="changePic()" type="file" accept=".jpeg,.jpg,.png" id="album_cover_input" name="avatar" required>
+                <input type="text" id="albumName" placeholder="Album name" name="albumName" required>    
+                <input type="text" id="artistName" placeholder="Artist name" name="artistName" required>
+            </form>
+            
+        </div>
+        <button onclick="addSong()">Add song</button>
+        <div>
+
+        <form id="song-form0" action="/uploadSong" method="POST" enctype="multipart/form-data" target="_blank">
+            <input id="songnameinput0" type="text" name="songname" required>
+            <input type="file" placeholder="song name" accept=".mp3" name="song" id="songfile0" required>
+        </form>
+
+        <button onclick="sendingForms()"> Make album</button>
+        
+    </div>
+</body>
+</html>
